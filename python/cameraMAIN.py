@@ -50,12 +50,16 @@ while True:
         if testloop:
             inloop = True
             while inloop:
-                delta2 = pisync(syncOUT, syncIN)
-                time.sleep(delta2)
+                print 'testing loop'
+                #delta2 = pisync(syncOUT, syncIN)
+                time.sleep(1)
                 camera.capimage()
+                time.sleep(1)
                 camera.capvideo()
+                time.sleep(1)
                 camera.capraw()
-                camera.signal(5, 0.01)
+                time.sleep(1)
+                camera.signal(5, 0.2)
                 time.sleep(1)
                 try:
                     GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING)
@@ -63,6 +67,7 @@ while True:
                 except KeyboardInterrupt:
                     print 'keyboard interrupt... exiting'
                     break
+                inloop=True
         else:
             camera.capimage()
     except KeyboardInterrupt:

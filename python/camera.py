@@ -60,17 +60,17 @@ class App:
 
     def capvideo(self):
         #print 'captured video'
-        GPIO.output(CAMLED,False)
+        GPIO.output(self.CAMLED,False)
         self.camera.start_recording('%s.%s' % (str(self.out), 'mkv'), format=self.vcodec)
         time.sleep(self.n)
         self.camera.stop_recording()
-        GPIO.output(CAMLED,True)
+        GPIO.output(self.CAMLED,True)
 
     def capraw(self):
         #stream = io.BytesIO()
         #print 'captured raw'
         GPIO.output(self.CAMLED,False)
-        self.camera.capture('home/pi/imageIMUSync/data/'+str(datetime.datetime.now().strftime('%H-%M-%S-%f'))+'.jpg' , format='jpeg', bayer=True)
+        self.camera.capture('home/pi/imageIMUsync/data/'+str(datetime.datetime.now().strftime('%H-%M-%S-%f'))+'.jpg' , format='jpeg', bayer=True)
         GPIO.output(self.CAMLED,True)
 
 if __name__=='__main__':
