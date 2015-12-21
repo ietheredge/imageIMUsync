@@ -19,7 +19,9 @@ def waitforpisignal(GPIOPINNo, wait):
 wait = True
 triggerGPIO = 23
 pi2piGPIO = 24
-network = '128.83.0.0/16' #IP range for pis connected to network
+network = '128.83.0.0/16'
+client.servers.append('128.83.136.187')
+client.servers.append('128.83.136.152')
 stacksize = 10 #number of images to grab in each stack
 memthreshold = 2000 #memmory threshold, in kbs
 
