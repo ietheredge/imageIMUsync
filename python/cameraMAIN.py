@@ -65,5 +65,8 @@ while True:
     except KeyboardInterrupt:
         print 'keyboard interrupt... exiting'
         break
+    else:
+        pass
+
 GPIO.cleanup()
 exit()
