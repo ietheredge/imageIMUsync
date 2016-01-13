@@ -4,51 +4,74 @@ import argparse
 import time
 import datetime
 import io
-
+import RPi.GPIO as GPIO
 
 class App:
 
-    def __init__(self, imformat, vcodec, res, exposure, rate, iteration, outputfile):
+    def __init__(self):
         # setup log
         datlog = logging.getLogger('cameralog')
-        hdlr = logging.FileHandler('../log/cameralog.log')
+        hdlr = logging.FileHandler('home/pi/imageIMUSync/log/cameralog.log')
         formatter = logging.Formatter('%(asctime)s, %(levelname)s, %(message)s', "%H-%M-%S-%f")
         hdlr.setFormatter(formatter)
         datlog.addHandler(hdlr)
         datlog.setLevel(logging.INFO)
+        GPIO.setmode(GPIO.BCM)
+        self.CAMLED = 32 #ALWAYS 32 on the model I use, can be 5 on others...
+        GPIO.setup(CAMLED, GPIO.OUT, initial=True)
+        self.camera = picamera.PiCamera()
 
+    def settings(self, imformat, vcodec, res, exposure, rate, iteration, outputfile):
         ##datlog.info("camera initiated stack n= ",str(itterations)," format= ",str(imformat)," output to=",str(outputfile))
         self.n = int(iteration)
-        self.out = '../data/','camera_',str(time.asctime()),'/',outputfile
+        self.out = ('home/pi/imageIMUSync/data/'+outputfile)
 
         # setup camera
-        self.camera = picamera.PiCamera()
+
         self.camera.resolution = tuple(int(item) for item in res.split('x') if item.strip())
         self.imformat = imformat
         self.vcodec = vcodec
         self.camera.exposure_mode = exposure
+        self.camera.awb_mode = 'off'
         self.camera.framerate = int(rate)
 
         logging.info('camera exposure setting:'+str(self.camera.exposure_mode))
         logging.info('camera shutter speed:'+str(self.camera.shutter_speed))
-        time.sleep(2)
+        time.sleep(1)
+
+    def signal(self, n, length):
+        for i in range(n):
+            GPIO.output(self.CAMLED,False) # On
+            time.sleep(length)
+            GPIO.output(self.CAMLED,True) # Off
+            time.sleep(length)
 
     def capimage(self):
+        #print 'captured image'
+        GPIO.output(CAMLED,False)
         self.camera.capture('%s.%s' % (self.out, self.imformat))
-
+        GPIO.output(CAMLED,True)
 
     def capimagestack(self):
+        #print 'captured stack'
+        GPIO.output(CAMLED,False)
         self.camera.capture_sequence([str(self.out)+'_%04d.jpg' % i for i in range(self.n)], use_video_port=False)
+        GPIO.output(CAMLED,True)
 
     def capvideo(self):
+        #print 'captured video'
+        GPIO.output(CAMLED,False)
         self.camera.start_recording('%s.%s' % (str(self.out), 'mkv'), format=self.vcodec)
         time.sleep(self.n)
         self.camera.stop_recording()
+        GPIO.output(CAMLED,True)
 
     def capraw(self):
         #stream = io.BytesIO()
-        self.camera.capture('../data/'+str(datetime.datetime.now().strftime('%H-%M-%S-%f'))+str(input)'.jpg' , format='jpeg', bayer=True)
-
+        #print 'captured raw'
+        GPIO.output(CAMLED,False)
+        self.camera.capture('home/pi/imageIMUSync/data/'+str(datetime.datetime.now().strftime('%H-%M-%S-%f'))+'.jpg' , format='jpeg', bayer=True)
+        GPIO.output(CAMLED,True)
 
 if __name__=='__main__':
 
@@ -98,8 +121,9 @@ if __name__=='__main__':
         out = 'output%s' % str(time.asctime(time.localtime(time.time())))
 
     # initiate camera
-    kamera = App(imformat, videocodec, resolution, exposure, rate, num, out)
-
+    kamera = App()
+    kamera.settings(imformat, videocodec, resolution, exposure, rate, num, out)
+    kamera.signal(7,0.25)
     # captures
     if args["image"]:
         if args["format"]=='RAW':
