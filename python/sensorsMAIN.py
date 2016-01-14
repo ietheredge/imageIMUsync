@@ -21,7 +21,7 @@ def converttodecimal(lat, lon):
     return latitudeD, longitudeD
 def checkaxes(observer, imuroll, imupitch, imuyawintsp, itsp, afsp, hp,
                 precision=22.5):
-    observer.date = time.localtime()
+    observer.date = time.time()
     sun=ephem.Sun(observer)
     ## this function is not very pythonic, can be improved upon greatly....
     sunalt = str(sun.alt)
