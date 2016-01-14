@@ -76,11 +76,7 @@ while True:
         else:
             camera.capimage()
     else:
-        try:
-            continue
-        except KeyboardInterrupt:
-            print 'keyboard interrupt... exiting'
-            break
+        pass
 
 
 GPIO.cleanup()
