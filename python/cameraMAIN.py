@@ -62,6 +62,11 @@ while True:
                 time.sleep(1)
                 camera.signal(5, 0.2)
                 time.sleep(1)
+                try:
+                    GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING)
+                    break
+                except:
+                    pass
         else:
             camera.capimage()
     except KeyboardInterrupt:
