@@ -78,7 +78,7 @@ else:
 rig = ephem.Observer()
 rig.lon = str(longitudeD)
 rig.lat = str(latitudeD)
-sun=ephem.Sun(observer)
+sun=ephem.Sun()
 
 #LED pin info
 itsp = 17
