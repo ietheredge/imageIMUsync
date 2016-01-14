@@ -19,9 +19,10 @@ def converttodecimal(lat, lon):
     longitudeD = (1 if lnhem=="E" else -1)*(float(lndeg)+(float(lnmin)/60)+
     (float(lnsec)/3600))
     return latitudeD, longitudeD
-def checkaxes(imuroll, imupitch, imuyawintsp, itsp, afsp, hp, precision=22.5):
-    ephem.date(time.time())
-    sun=ephem.Sun(rig)
+def checkaxes(observer, imuroll, imupitch, imuyawintsp, itsp, afsp, hp,
+                precision=22.5):
+    observer.date = time.localtime()
+    sun=ephem.Sun(observer)
     ## this function is not very pythonic, can be improved upon greatly....
     sunalt = str(sun.alt)
     sunaz = str(sun.az)
@@ -133,7 +134,7 @@ while True:
         rig.elevation = -depth
 
         ## get sun locatio nand set camera position LED indicators
-        alt, az = checkaxes(imuroll, imupitch, imuyaw, itsp, afsp, hp)
+        alt, az = checkaxes(rig, imuroll, imupitch, imuyaw, itsp, afsp, hp)
 
         ## time in milliseconds (GMT, convert for local)
         GMTms = int(round(time.time() * 1000))
