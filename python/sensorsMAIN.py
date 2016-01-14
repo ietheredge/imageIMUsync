@@ -133,7 +133,7 @@ while True:
         s=ephem.Sun(rig)
 
         ## get sun locatio nand set camera position LED indicators
-        alt, az = checkaxes(s, imuroll, imupitch, imuyaw, itsp, afsp, hp)
+        #alt, az = checkaxes(s, imuroll, imupitch, imuyaw, itsp, afsp, hp)
 
         ## time in milliseconds (GMT, convert for local)
         GMTms = int(round(time.time() * 1000))
