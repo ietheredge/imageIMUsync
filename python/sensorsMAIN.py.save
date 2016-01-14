@@ -19,11 +19,7 @@ def converttodecimal(lat, lon):
     longitudeD = (1 if lnhem=="E" else -1)*(float(lndeg)+(float(lnmin)/60)+
     (float(lnsec)/3600))
     return latitudeD, longitudeD
-def checkaxes(body, observer, imuroll, imupitch, imuyawintsp, itsp, afsp, hp,
-                precision=22.5):
-    observer.date = time.strftime("%Y/%m/%d %H:%M:%S"  , time.gmtime())
-    print observer.date
-    sun.compute(observer)
+def checkaxes(sun, imuroll, imupitch, imuyawintsp, itsp, afsp, hp, precision=22.5):
     ## this function is not very pythonic, can be improved upon greatly....
     sunalt = str(sun.alt)
     sunaz = str(sun.az)
@@ -74,11 +70,9 @@ if isinstance(lat, float):
     longitudeD = lon
 else:
     latitudeD, longitudeD = converttodecimal(lat, lon)
-
 rig = ephem.Observer()
 rig.lon = str(longitudeD)
 rig.lat = str(latitudeD)
-sun=ephem.Sun()
 
 #LED pin info
 itsp = 17
@@ -116,39 +110,43 @@ poll_interval = imu.IMUGetPollInterval()
 print("Recommended Poll Interval: %dmS\n" % poll_interval)
 
 while True:
-
     if imu.IMURead():
+
         ## collect data
+        try:
+            ## SPI/ depth sensor
+            data = ReadChannel(0) #only one device, channel 0
+            spioutvolts = ConvertVolts(data)
+            depth = get_depthMeters(spioutvolts)
 
-        ## i2C/ IMU&temperature
-        imudata = imu.getIMUData()
-        (ret1, ret2, temp1, temp2) = pressure.pressureRead()
-        imuread = imudata["fusionPose"]
-        imuroll, imupitch, imuyaw = (math.degrees(imuread[0])), (math.degrees(
-                                        imuread[1])),(math.degrees(imuread[2]))
+            ## i2C/ IMU&temperature
+            imudata = imu.getIMUData()
+            ret, ret, ret, temp = pressure.pressureRead()
+            imuread = imudata["fusionPose"]
+            imuroll, imupitch, imuyaw = math.degrees(imuread[0]), math.degrees(
+                                            imuread[1]),math.degrees(imuread[2])
+            ## calculate solar elevation
+            rig.elevation = -depth
+            s=ephem.Sun(rig)
 
-        ## SPI/ depth sensor
-        data = ReadChannel(0) #only one device, channel 0
-        spioutvolts = ConvertVolts(data)
-        depth = get_depthMeters(spioutvolts)
+            ## get sun locatio nand set camera position LED indicators
+            alt, az = checkaxes(s, imuroll, imupitch, imuyaw, itsp, afsp, hp)
 
-        ## calculate solar elevation
-        rig.elevation = -depth
-
-        ## get sun locatio nand set camera position LED indicators
-        alt, az = checkaxes(sun, rig, imuroll, imupitch, imuyaw, itsp, afsp, hp)
-
-        ## time in milliseconds (GMT, convert for local)
-        GMTms = int(round(time.time() * 1000))
-        print("t: %i-%i-%i-%i r: %f p: %f y: %f d: %f c: %f sa: %s sz: %s" %
-        (((int(GMTms)/(1000*60*60)%24)-6),(int(GMTms)/(1000*60)%60),
-        (int(GMTms)/1000%60),(int(GMTms)/1000),imuroll,
-        imupitch,imuyaw,depth, temp1,
-        alt, az))
-        time.sleep(poll_interval*1.0/1000.0)
-        ## using print and running the python script in a shell with >> will
-        ## output to a a file, you can replace the prints with writing to a
-        ## file directly, if you want.
-
-        #else:
-            #continue
+            ## time in milliseconds (GMT, convert for local)
+            GMTms = int(round(time.time() * 1000))
+            print("t: %i-%i-%i-%i r: %f p: %f y: %f d: %f c: %f sa: %s sz: %s" %
+            (((int(GMTms)/(1000*60*60)%24)-6),(int(GMTms)/(1000*60)%60),
+            (int(GMTms)/1000%60),(int(GMTms)/1000),imuroll,
+            imupitch,imuyaw,depth, temp,
+            alt, az))
+            time.sleep(poll_interval*1.0/1000.0)
+            ## using print and running the python script in a shell with >> will
+            ## output to a a file, you can replace the prints with writing to a
+            ## file directly, if you want.
+        except KeyboardInterrupt:
+            spi.close()
+            GPIO.cleanup()
+            break
+        else:
+            continue
+exit(0)
