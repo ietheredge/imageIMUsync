@@ -77,7 +77,7 @@ while True:
             camera.capimage()
     else:
         try:
-            pass
+            continue
         except KeyboardInterrupt:
             print 'keyboard interrupt... exiting'
             break
