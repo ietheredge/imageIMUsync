@@ -49,8 +49,9 @@ while True:
     #time.sleep(delta)
     down.main()
     try:
-        GPIO.event_detected(triggerGPIO)
-        loop = True
+        if GPIO.event_detected(triggerGPIO):
+            
+            loop = True
         if testloop:
             camera.signal(5, 0.2)
             time.sleep(1)
