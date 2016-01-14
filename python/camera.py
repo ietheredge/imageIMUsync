@@ -11,14 +11,14 @@ class App:
     def __init__(self):
         # setup log
         datlog = logging.getLogger('cameralog')
-        hdlr = logging.FileHandler('home/pi/imageIMUSync/log/cameralog.log')
+        hdlr = logging.FileHandler('home/pi/imageIMUsync/log/cameralog.log')
         formatter = logging.Formatter('%(asctime)s, %(levelname)s, %(message)s', "%H-%M-%S-%f")
         hdlr.setFormatter(formatter)
         datlog.addHandler(hdlr)
         datlog.setLevel(logging.INFO)
         GPIO.setmode(GPIO.BCM)
         self.CAMLED = 32 #ALWAYS 32 on the model I use, can be 5 on others...
-        GPIO.setup(CAMLED, GPIO.OUT, initial=True)
+        GPIO.setup(self.CAMLED, GPIO.OUT, initial=True)
         self.camera = picamera.PiCamera()
 
     def settings(self, imformat, vcodec, res, exposure, rate, iteration, outputfile):
@@ -48,9 +48,9 @@ class App:
 
     def capimage(self):
         #print 'captured image'
-        GPIO.output(CAMLED,False)
+        GPIO.output(self.CAMLED,False)
         self.camera.capture('%s.%s' % (self.out, self.imformat))
-        GPIO.output(CAMLED,True)
+        GPIO.output(self.CAMLED,True)
 
     def capimagestack(self):
         #print 'captured stack'

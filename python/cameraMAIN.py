@@ -6,10 +6,11 @@ import time
 import camera
 
 
-if sys.argv[1] == 'test':
+try:
+    sys.argv[1] == 'test'
     testloop = True
     print 'testing... testing...'
-else:
+except:
     testloop = False
 
 def pisync(outpin, inpin):
