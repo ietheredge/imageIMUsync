@@ -20,6 +20,7 @@ def converttodecimal(lat, lon):
     (float(lnsec)/3600))
     return latitudeD, longitudeD
 def checkaxes(imuroll, imupitch, imuyawintsp, itsp, afsp, hp, precision=22.5):
+    ephem.date(time.time())
     sun=ephem.Sun(rig)
     ## this function is not very pythonic, can be improved upon greatly....
     sunalt = str(sun.alt)
@@ -71,6 +72,7 @@ if isinstance(lat, float):
     longitudeD = lon
 else:
     latitudeD, longitudeD = converttodecimal(lat, lon)
+
 rig = ephem.Observer()
 rig.lon = str(longitudeD)
 rig.lat = str(latitudeD)
