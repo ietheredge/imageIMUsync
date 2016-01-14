@@ -42,7 +42,7 @@ camera.settings('png', 'h264', '1920x1080', 'sports', 30, 1, 'output%s' %
 camera.signal(5, 0.5)
 
 while True:
-    delta = pisync(syncOUT, syncIN)
+    #delta = pisync(syncOUT, syncIN)
     time.sleep(delta)
     down.main()
     try:
