@@ -48,36 +48,36 @@ while True:
     #delta = pisync(syncOUT, syncIN)
     #time.sleep(delta)
     down.main()
-
-    if GPIO.event_detected(triggerGPIO):
-        if testloop:
-            loop = True
-            camera.signal(5, 0.2)
-            time.sleep(1)
-            while loop:
-                down.main()
-                print 'testing loop'
-                #delta2 = pisync(syncOUT, syncIN)
-                time.sleep(1)
-                camera.capimage()
-                time.sleep(1)
-                camera.capvideo()
-                time.sleep(1)
-                camera.capraw()
-                time.sleep(1)
+    try:
+        if GPIO.event_detected(triggerGPIO):
+            if testloop:
+                loop = True
                 camera.signal(5, 0.2)
                 time.sleep(1)
-                if GPIO.event_detected(triggerGPIO):
-                    loop = False
-                    break
-                else:
-                    print 'continuing'
-                    continue
-        else:
-            camera.capimage()
-    else:
-        print 'no trigger'
-        continue
+                while loop:
+                    down.main()
+                    print 'testing loop'
+                    #delta2 = pisync(syncOUT, syncIN)
+                    time.sleep(1)
+                    camera.capimage()
+                    time.sleep(1)
+                    camera.capvideo()
+                    time.sleep(1)
+                    camera.capraw()
+                    time.sleep(1)
+                    camera.signal(5, 0.2)
+                    time.sleep(1)
+                    if GPIO.event_detected(triggerGPIO):
+                        loop = False
+                        break
+                    else:
+                        print 'continuing'
+                        continue
+            else:
+                camera.capimage()
+    except KeyboardInterrupt:
+        print 'keyboard interrup--exiting'
+        break
 
 
 
