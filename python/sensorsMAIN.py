@@ -111,10 +111,8 @@ poll_interval = imu.IMUGetPollInterval()
 print("Recommended Poll Interval: %dmS\n" % poll_interval)
 
 while True:
-    print 'out'
-    if imu.IMURead():
-        print 'in'
 
+    if imu.IMURead():
         ## collect data
 
         ## i2C/ IMU&temperature
@@ -131,7 +129,6 @@ while True:
 
         ## calculate solar elevation
         rig.elevation = -depth
-
 
         ## get sun locatio nand set camera position LED indicators
         alt, az = checkaxes(imuroll, imupitch, imuyaw, itsp, afsp, hp)
