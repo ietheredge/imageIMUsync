@@ -5,7 +5,7 @@ import RTIMU
 import os.path
 import time
 import math
-import Rpi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import ephem
 sys.path.append('.')
 
@@ -34,13 +34,13 @@ def checkaxes(sun, imuroll, imupitch, imuyawintsp, itsp, afsp, hp, precision=22.
     h = (True if (-1*precision)<=imuroll<=precision and (-1*precision)<=
         imupitch<=precision else False)
     if its:
-        GPIO.output(intsp GPIO.HIGH)
+        GPIO.output(itsp, GPIO.HIGH)
     if afs:
         GPIO.output(afsp, GPIO.HIGH)
     if h:
         GPIO.output(hp, GPIO.HIGH)
     if not its:
-        GPIO.output(intsp, GPIO.LOW)
+        GPIO.output(itsp, GPIO.LOW)
     if not afs:
         GPIO.output(afsp, GPIO.LOW)
     if not h:
@@ -59,13 +59,11 @@ def get_depthMeters(Vout):
     return ((((Vout/5)-0.04)/0.000901)-(1.01*(10**5)))/(1029*9.8)
 
 #ephem site location info
-if sys.argv[1]:
+try:
     lat = sys.argv[1]
-else:
+    lon = sys.rgv[2]
+except:
     lat = "27:36:20.80:N"
-if sys.argv[2]:
-    lon = sys.argv[2]
-else:
     lon = "95:45:20.00:W"
 if isinstance(lat, float):
     latitudeD = lat
@@ -82,9 +80,9 @@ afsp = 27
 hp = 22
 #pin setup
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(self.intosunpinno, GPIO.OUT)
-GPIO.setup(self.awayfromsunpinno, GPIO.OUT)
-GPIO.setup(self.horizontalpinno, GPIO.OUT)
+GPIO.setup(itsp, GPIO.OUT)
+GPIO.setup(afsp, GPIO.OUT)
+GPIO.setup(hp, GPIO.OUT)
 
 #SPI setup
 spi = spidev.SpiDev()
@@ -132,14 +130,14 @@ while True:
             s=ephem.Sun(rig)
 
             ## get sun locatio nand set camera position LED indicators
-            alt, az = checkaxes(s, imuroll, imupitch, imuyaw, intsp, afsp, hp)
+            alt, az = checkaxes(s, imuroll, imupitch, imuyaw, itsp, afsp, hp)
 
             ## time in milliseconds (GMT, convert for local)
             GMTms = int(round(time.time() * 1000))
-            print("t: %i-%i-%i-%i r: %f p: %f y: %f d: %f c: %f sa: %f sz: %f" %
+            print("t: %i-%i-%i-%i r: %f p: %f y: %f d: %f c: %f sa: %s sz: %s" %
             (((int(GMTms)/(1000*60*60)%24)-6),(int(GMTms)/(1000*60)%60),
-            (int(GMTms)/1000%60),(int(GMTms)/1000),math.degree(fusionPose[0]),
-            math.degrees(fusionPose[1]),math.degrees(fusionPose[2]),depth, temp,
+            (int(GMTms)/1000%60),(int(GMTms)/1000),imuroll,
+            imupitch,imuyaw,depth, temp,
             alt, az))
             time.sleep(poll_interval*1.0/1000.0)
             ## using print and running the python script in a shell with >> will
