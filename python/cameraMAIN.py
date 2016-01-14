@@ -9,6 +9,7 @@ import camera
 try:
     sys.argv[1] == 'test'
     testloop = True
+    loop = True
     print 'testing... testing...'
 except:
     testloop = False
@@ -53,7 +54,7 @@ while True:
         if testloop:
             camera.signal(5, 0.2)
             time.sleep(1)
-            while True:
+            while loop:
                 print 'testing loop'
                 #delta2 = pisync(syncOUT, syncIN)
                 time.sleep(1)
@@ -66,6 +67,7 @@ while True:
                 camera.signal(5, 0.2)
                 time.sleep(1)
                 if GPIO.event_detected(triggerGPIO):
+                    loop = False
                     break
                 else:
                     print 'continuing'
