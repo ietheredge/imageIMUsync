@@ -147,6 +147,6 @@ while True:
             spi.close()
             GPIO.cleanup()
             break
-        else:
-            continue
+        #else:
+            #continue
 exit(0)
