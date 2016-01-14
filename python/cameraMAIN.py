@@ -48,11 +48,10 @@ while True:
     #delta = pisync(syncOUT, syncIN)
     #time.sleep(delta)
     down.main()
-    try:
-        if GPIO.event_detected(triggerGPIO):
-            
-            loop = True
+
+    if GPIO.event_detected(triggerGPIO):
         if testloop:
+            loop = True
             camera.signal(5, 0.2)
             time.sleep(1)
             while loop:
