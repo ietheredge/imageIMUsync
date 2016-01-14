@@ -113,19 +113,21 @@ while True:
     print 'out'
     if imu.IMURead():
         print 'in'
+
         ## collect data
+
+        ## i2C/ IMU&temperature
+        imudata = imu.getIMUData()
+        (ret1, ret2, temp1, temp2) = pressure.pressureRead()
+        imuread = imudata["fusionPose"]
+        imuroll, imupitch, imuyaw = (math.degrees(imuread[0])), (math.degrees(
+                                        imuread[1])),(math.degrees(imuread[2]))
 
         ## SPI/ depth sensor
         data = ReadChannel(0) #only one device, channel 0
         spioutvolts = ConvertVolts(data)
         depth = get_depthMeters(spioutvolts)
 
-        ## i2C/ IMU&temperature
-        imudata = imu.getIMUData()
-        ret1, ret2, ret3, temp = pressure.pressureRead()
-        imuread = imudata["fusionPose"]
-        imuroll, imupitch, imuyaw = math.degrees(imuread[0]), math.degrees(
-                                        imuread[1]),math.degrees(imuread[2])
         ## calculate solar elevation
         rig.elevation = -depth
         s=ephem.Sun(rig)
