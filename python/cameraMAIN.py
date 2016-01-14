@@ -12,7 +12,7 @@ try:
     print 'testing... testing...'
 except:
     testloop = False
-
+'''
 def pisync(outpin, inpin):
     pass
     diff = outpin - inpin
@@ -20,14 +20,14 @@ def pisync(outpin, inpin):
         return diff
     else:
         return 0
-
+'''
 GPIO.setmode(GPIO.BCM)
 triggerGPIO = 23
-syncOUT = 24 ##?
-syncIN =  25 ##?
+#syncOUT = 24 ##?
+#syncIN =  25 ##?
 GPIO.setup(triggerGPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP) # trigger interrupt
-GPIO.setup(syncOUT, GPIO.OUT)
-GPIO.setup(syncIN, GPIO.IN)
+#GPIO.setup(syncOUT, GPIO.OUT)
+#GPIO.setup(syncIN, GPIO.IN)
 ## set directory
 os.chdir('/')
 
@@ -39,7 +39,7 @@ camera = camera.App()
 
 camera.settings('png', 'h264', '1920x1080', 'sports', 30, 1, 'output%s' %
                 str(time.asctime(time.localtime(time.time()))))
-camera.signal(7, 0.5)
+camera.signal(5, 0.5)
 
 while True:
     delta = pisync(syncOUT, syncIN)
@@ -48,7 +48,8 @@ while True:
     try:
         GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING)
         if testloop:
-            inloop = True
+            camera.signal(5, 0.2)
+            time.sleep(1)
             while inloop:
                 print 'testing loop'
                 #delta2 = pisync(syncOUT, syncIN)
@@ -61,13 +62,6 @@ while True:
                 time.sleep(1)
                 camera.signal(5, 0.2)
                 time.sleep(1)
-                try:
-                    GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING)
-                    inloop = False
-                except KeyboardInterrupt:
-                    print 'keyboard interrupt... exiting'
-                    break
-                inloop=True
         else:
             camera.capimage()
     except KeyboardInterrupt:

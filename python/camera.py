@@ -51,13 +51,11 @@ class App:
         GPIO.output(self.CAMLED,False)
         self.camera.capture('%s.%s' % (self.out, self.imformat))
         GPIO.output(self.CAMLED,True)
-
     def capimagestack(self):
         #print 'captured stack'
         GPIO.output(CAMLED,False)
         self.camera.capture_sequence([str(self.out)+'_%04d.jpg' % i for i in range(self.n)], use_video_port=False)
         GPIO.output(CAMLED,True)
-
     def capvideo(self):
         #print 'captured video'
         GPIO.output(self.CAMLED,False)
@@ -65,14 +63,12 @@ class App:
         time.sleep(self.n)
         self.camera.stop_recording()
         GPIO.output(self.CAMLED,True)
-
     def capraw(self):
         #stream = io.BytesIO()
         #print 'captured raw'
         GPIO.output(self.CAMLED,False)
         self.camera.capture('home/pi/imageIMUsync/data/'+str(datetime.datetime.now().strftime('%H-%M-%S-%f'))+'.jpg' , format='jpeg', bayer=True)
         GPIO.output(self.CAMLED,True)
-
 if __name__=='__main__':
 
     #command line arguments
