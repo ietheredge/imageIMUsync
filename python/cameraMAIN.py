@@ -49,7 +49,7 @@ while True:
     #time.sleep(delta)
     down.main()
 
-    if GPIO.event_detected(triggerGPIO):
+    try GPIO.event_detected(triggerGPIO):
         if testloop:
             loop = True
             camera.signal(5, 0.2)
@@ -75,11 +75,12 @@ while True:
                     continue
         else:
             camera.capimage()
-    else:
-        pass
     except KeyboardInterrupt:
         print 'keyboard interrupt... exiting'
         break
+    else:
+        pass
+
 
 GPIO.cleanup()
 exit()
