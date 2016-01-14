@@ -47,7 +47,7 @@ class App:
             time.sleep(length)
 
     def capimage(self):
-        #print 'captured image'
+        print 'captured image'
         GPIO.output(self.CAMLED,False)
         self.camera.capture('%s.%s' % (self.out, self.imformat))
         GPIO.output(self.CAMLED,True)
