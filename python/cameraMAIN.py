@@ -27,7 +27,7 @@ triggerGPIO = 23
 #syncIN =  25 ##?
 
 # trigger interrupt
-GPIO.setup(triggerGPIO, GPIO.IN)
+GPIO.setup(triggerGPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.add_event_detect(triggerGPIO, GPIO.BOTH)
 #GPIO.setup(syncOUT, GPIO.OUT)
 #GPIO.setup(syncIN, GPIO.IN)
@@ -49,7 +49,7 @@ while True:
     #time.sleep(delta)
     down.main()
     try:
-        if GPIO.event_detected(triggerGPIO):
+        GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING)
             if testloop:
                 loop = True
                 camera.signal(5, 0.2)
