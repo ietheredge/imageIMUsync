@@ -49,7 +49,7 @@ while True:
     #time.sleep(delta)
     down.main()
     try:
-        GPIO.event_detected(triggerGPIO, GPIO.BOTH)
+        GPIO.event_detected(triggerGPIO)
         if testloop:
             camera.signal(5, 0.2)
             time.sleep(1)
@@ -65,7 +65,7 @@ while True:
                 time.sleep(1)
                 camera.signal(5, 0.2)
                 time.sleep(1)
-                if GPIO.event_detected(triggerGPIO, GPIO.BOTH):
+                if GPIO.event_detected(triggerGPIO):
                     break
                 else:
                     print 'continuing'
