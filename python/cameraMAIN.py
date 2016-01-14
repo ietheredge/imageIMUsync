@@ -25,7 +25,10 @@ GPIO.setmode(GPIO.BCM)
 triggerGPIO = 23
 #syncOUT = 24 ##?
 #syncIN =  25 ##?
-GPIO.setup(triggerGPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP) # trigger interrupt
+
+# trigger interrupt
+GPIO.setup(triggerGPIO, GPIO.IN)
+GPIO.add_event_detect(triggerGPIO, GPIO.BOTH
 #GPIO.setup(syncOUT, GPIO.OUT)
 #GPIO.setup(syncIN, GPIO.IN)
 ## set directory
@@ -46,7 +49,7 @@ while True:
     #time.sleep(delta)
     down.main()
     try:
-        GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING)
+        GPIO.event_detected(triggerGPIO, GPIO.BOTH)
         if testloop:
             camera.signal(5, 0.2)
             time.sleep(1)
@@ -62,7 +65,7 @@ while True:
                 time.sleep(1)
                 camera.signal(5, 0.2)
                 time.sleep(1)
-                if GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING):
+                if GPIO.event_detected(triggerGPIO, GPIO.BOTH):
                     break
                 else:
                     print 'continuing'
