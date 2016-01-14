@@ -55,6 +55,7 @@ while True:
             camera.signal(5, 0.2)
             time.sleep(1)
             while loop:
+                down.main()
                 print 'testing loop'
                 #delta2 = pisync(syncOUT, syncIN)
                 time.sleep(1)
