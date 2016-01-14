@@ -69,9 +69,9 @@ class App:
     def capraw(self):
         #stream = io.BytesIO()
         #print 'captured raw'
-        GPIO.output(self.CAMLED,False)
+        GPIO.output(CAMLED,False)
         self.camera.capture('home/pi/imageIMUSync/data/'+str(datetime.datetime.now().strftime('%H-%M-%S-%f'))+'.jpg' , format='jpeg', bayer=True)
-        GPIO.output(self.CAMLED,True)
+        GPIO.output(CAMLED,True)
 
 if __name__=='__main__':
 
