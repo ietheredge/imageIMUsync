@@ -9,7 +9,6 @@ import camera
 try:
     sys.argv[1] == 'test'
     testloop = True
-    loop = True
     print 'testing... testing...'
 except:
     testloop = False
@@ -51,6 +50,7 @@ while True:
     down.main()
     try:
         GPIO.event_detected(triggerGPIO)
+        loop = True
         if testloop:
             camera.signal(5, 0.2)
             time.sleep(1)
