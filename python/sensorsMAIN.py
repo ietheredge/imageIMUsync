@@ -22,7 +22,7 @@ def converttodecimal(lat, lon):
 def checkaxes(body, observer, imuroll, imupitch, imuyawintsp, itsp, afsp, hp,
                 precision=22.5):
     observer.date = time.time()
-
+    print observer.date
     sun.compute(observer)
     ## this function is not very pythonic, can be improved upon greatly....
     sunalt = str(sun.alt)
