@@ -134,7 +134,7 @@ while True:
 
         ## get sun locatio nand set camera position LED indicators
         #alt, az = checkaxes(s, imuroll, imupitch, imuyaw, itsp, afsp, hp)
-
+        alt, az = 1,3
         ## time in milliseconds (GMT, convert for local)
         GMTms = int(round(time.time() * 1000))
         print("t: %i-%i-%i-%i r: %f p: %f y: %f d: %f c: %f sa: %s sz: %s" %
