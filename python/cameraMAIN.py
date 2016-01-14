@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import os
 import sys
-import softresetClient as softreset
+import softresetNOLEDS as softreset
 import time
 import camera
 

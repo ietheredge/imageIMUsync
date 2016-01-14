@@ -14,7 +14,7 @@ class App():
     def main(self):
         print 'served'
         if GPIO.event_detected(self.pin):
-        App.shutitdown(self)
+            App.shutitdown(self)
 
     def shutitdown(self):
         print 'trigger'
