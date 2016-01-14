@@ -143,10 +143,7 @@ while True:
         ## using print and running the python script in a shell with >> will
         ## output to a a file, you can replace the prints with writing to a
         ## file directly, if you want.
-        except KeyboardInterrupt:
-            spi.close()
-            GPIO.cleanup()
-            break
+
         #else:
             #continue
 exit(0)
