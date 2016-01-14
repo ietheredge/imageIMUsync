@@ -28,7 +28,7 @@ triggerGPIO = 23
 
 # trigger interrupt
 GPIO.setup(triggerGPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.add_event_detect(triggerGPIO, GPIO.BOTH)
+#GPIO.add_event_detect(triggerGPIO, GPIO.BOTH)
 #GPIO.setup(syncOUT, GPIO.OUT)
 #GPIO.setup(syncIN, GPIO.IN)
 ## set directory
@@ -67,12 +67,12 @@ while True:
                 time.sleep(1)
                 camera.signal(5, 0.2)
                 time.sleep(1)
-                if GPIO.event_detected(triggerGPIO):
-                    loop = False
-                    break
-                else:
-                    print 'continuing'
-                    continue
+                #if GPIO.event_detected(triggerGPIO):
+                #    loop = False
+                #    break
+                #else:
+                #    print 'continuing'
+                #    continue
             else:
                 camera.capimage()
     except KeyboardInterrupt:
