@@ -140,7 +140,7 @@ while True:
         print("t: %i-%i-%i-%i r: %f p: %f y: %f d: %f c: %f sa: %s sz: %s" %
         (((int(GMTms)/(1000*60*60)%24)-6),(int(GMTms)/(1000*60)%60),
         (int(GMTms)/1000%60),(int(GMTms)/1000),imuroll,
-        imupitch,imuyaw,depth, ret3,
+        imupitch,imuyaw,depth, temp1,
         alt, az))
         time.sleep(poll_interval*1.0/1000.0)
         ## using print and running the python script in a shell with >> will
