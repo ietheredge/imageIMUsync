@@ -50,29 +50,29 @@ while True:
     down.main()
     try:
         GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING)
-            if testloop:
-                loop = True
+        if testloop:
+            loop = True
+            camera.signal(5, 0.2)
+            time.sleep(1)
+            while loop:
+                down.main()
+                print 'testing loop'
+                #delta2 = pisync(syncOUT, syncIN)
+                time.sleep(1)
+                camera.capimage()
+                time.sleep(1)
+                camera.capvideo()
+                time.sleep(1)
+                camera.capraw()
+                time.sleep(1)
                 camera.signal(5, 0.2)
                 time.sleep(1)
-                while loop:
-                    down.main()
-                    print 'testing loop'
-                    #delta2 = pisync(syncOUT, syncIN)
-                    time.sleep(1)
-                    camera.capimage()
-                    time.sleep(1)
-                    camera.capvideo()
-                    time.sleep(1)
-                    camera.capraw()
-                    time.sleep(1)
-                    camera.signal(5, 0.2)
-                    time.sleep(1)
-                    if GPIO.event_detected(triggerGPIO):
-                        loop = False
-                        break
-                    else:
-                        print 'continuing'
-                        continue
+                if GPIO.event_detected(triggerGPIO):
+                    loop = False
+                    break
+                else:
+                    print 'continuing'
+                    continue
             else:
                 camera.capimage()
     except KeyboardInterrupt:
