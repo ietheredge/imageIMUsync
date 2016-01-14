@@ -43,7 +43,7 @@ camera.signal(5, 0.5)
 
 while True:
     #delta = pisync(syncOUT, syncIN)
-    time.sleep(delta)
+    #time.sleep(delta)
     down.main()
     try:
         GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING)
