@@ -28,7 +28,7 @@ triggerGPIO = 23
 
 # trigger interrupt
 GPIO.setup(triggerGPIO, GPIO.IN)
-GPIO.add_event_detect(triggerGPIO, GPIO.BOTH
+GPIO.add_event_detect(triggerGPIO, GPIO.BOTH)
 #GPIO.setup(syncOUT, GPIO.OUT)
 #GPIO.setup(syncIN, GPIO.IN)
 ## set directory
