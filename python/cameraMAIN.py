@@ -76,7 +76,9 @@ while True:
         else:
             camera.capimage()
     else:
-        pass
+        print 'no trigger'
+        continue
+
 
 
 GPIO.cleanup()
