@@ -113,36 +113,36 @@ while True:
     if imu.IMURead():
 
         ## collect data
-        try:
-            ## SPI/ depth sensor
-            data = ReadChannel(0) #only one device, channel 0
-            spioutvolts = ConvertVolts(data)
-            depth = get_depthMeters(spioutvolts)
 
-            ## i2C/ IMU&temperature
-            imudata = imu.getIMUData()
-            ret, ret, ret, temp = pressure.pressureRead()
-            imuread = imudata["fusionPose"]
-            imuroll, imupitch, imuyaw = math.degrees(imuread[0]), math.degrees(
-                                            imuread[1]),math.degrees(imuread[2])
-            ## calculate solar elevation
-            rig.elevation = -depth
-            s=ephem.Sun(rig)
+        ## SPI/ depth sensor
+        data = ReadChannel(0) #only one device, channel 0
+        spioutvolts = ConvertVolts(data)
+        depth = get_depthMeters(spioutvolts)
 
-            ## get sun locatio nand set camera position LED indicators
-            alt, az = checkaxes(s, imuroll, imupitch, imuyaw, itsp, afsp, hp)
+        ## i2C/ IMU&temperature
+        imudata = imu.getIMUData()
+        ret, ret, ret, temp = pressure.pressureRead()
+        imuread = imudata["fusionPose"]
+        imuroll, imupitch, imuyaw = math.degrees(imuread[0]), math.degrees(
+                                        imuread[1]),math.degrees(imuread[2])
+        ## calculate solar elevation
+        rig.elevation = -depth
+        s=ephem.Sun(rig)
 
-            ## time in milliseconds (GMT, convert for local)
-            GMTms = int(round(time.time() * 1000))
-            print("t: %i-%i-%i-%i r: %f p: %f y: %f d: %f c: %f sa: %s sz: %s" %
-            (((int(GMTms)/(1000*60*60)%24)-6),(int(GMTms)/(1000*60)%60),
-            (int(GMTms)/1000%60),(int(GMTms)/1000),imuroll,
-            imupitch,imuyaw,depth, temp,
-            alt, az))
-            time.sleep(poll_interval*1.0/1000.0)
-            ## using print and running the python script in a shell with >> will
-            ## output to a a file, you can replace the prints with writing to a
-            ## file directly, if you want.
+        ## get sun locatio nand set camera position LED indicators
+        alt, az = checkaxes(s, imuroll, imupitch, imuyaw, itsp, afsp, hp)
+
+        ## time in milliseconds (GMT, convert for local)
+        GMTms = int(round(time.time() * 1000))
+        print("t: %i-%i-%i-%i r: %f p: %f y: %f d: %f c: %f sa: %s sz: %s" %
+        (((int(GMTms)/(1000*60*60)%24)-6),(int(GMTms)/(1000*60)%60),
+        (int(GMTms)/1000%60),(int(GMTms)/1000),imuroll,
+        imupitch,imuyaw,depth, temp,
+        alt, az))
+        time.sleep(poll_interval*1.0/1000.0)
+        ## using print and running the python script in a shell with >> will
+        ## output to a a file, you can replace the prints with writing to a
+        ## file directly, if you want.
         except KeyboardInterrupt:
             spi.close()
             GPIO.cleanup()
