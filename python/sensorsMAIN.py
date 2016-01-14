@@ -110,8 +110,9 @@ poll_interval = imu.IMUGetPollInterval()
 print("Recommended Poll Interval: %dmS\n" % poll_interval)
 
 while True:
+    print 'out'
     if imu.IMURead():
-
+        print 'in'
         ## collect data
 
         ## SPI/ depth sensor
@@ -139,7 +140,7 @@ while True:
         (int(GMTms)/1000%60),(int(GMTms)/1000),imuroll,
         imupitch,imuyaw,depth, ret3,
         alt, az))
-        #time.sleep(poll_interval*1.0/1000.0)
+        time.sleep(poll_interval*1.0/1000.0)
         ## using print and running the python script in a shell with >> will
         ## output to a a file, you can replace the prints with writing to a
         ## file directly, if you want.
