@@ -42,7 +42,7 @@ camera = camera.App()
 
 camera.settings('png', 'h264', '1920x1080', 'sports', 30, 1, 'output%s' %
                 str(time.asctime(time.localtime(time.time()))))
-camera.signal(5, 0.5)
+camera.signal(10, 0.1)
 
 while True:
     #delta = pisync(syncOUT, syncIN)
@@ -51,10 +51,10 @@ while True:
     try:
         GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING)
         if testloop:
-            loop = True
-            camera.signal(5, 0.2)
+            #loop = True
+            camera.signal(5, 0.75)
             time.sleep(1)
-            while loop:
+            while True:
                 down.main()
                 print 'testing loop'
                 #delta2 = pisync(syncOUT, syncIN)
@@ -65,7 +65,7 @@ while True:
                 time.sleep(1)
                 camera.capraw()
                 time.sleep(1)
-                camera.signal(5, 0.2)
+                camera.signal(3, 0.25)
                 time.sleep(1)
                 #if GPIO.event_detected(triggerGPIO):
                 #    loop = False
