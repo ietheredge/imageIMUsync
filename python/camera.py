@@ -32,9 +32,9 @@ class App:
         self.imformat = imformat
         self.vcodec = vcodec
         self.camera.exposure_mode = exposure
-        self.camera.awb_mode = 'off'
+        self.camera.awb_mode = 'shade'
         self.camera.framerate = int(rate)
-
+        self.
         logging.info('camera exposure setting:'+str(self.camera.exposure_mode))
         logging.info('camera shutter speed:'+str(self.camera.shutter_speed))
         time.sleep(1)
@@ -59,7 +59,7 @@ class App:
     def capvideo(self):
         #print 'captured video'
         GPIO.output(self.CAMLED,False)
-        self.camera.start_recording('%s.%s' % (str(self.out), 'mkv'), format=self.vcodec)
+        self.camera.start_recording('%s.%s' % (str(self.out), 'mkv'))
         time.sleep(self.n)
         self.camera.stop_recording()
         GPIO.output(self.CAMLED,True)
