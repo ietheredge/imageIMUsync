@@ -34,7 +34,6 @@ class App:
         self.camera.exposure_mode = exposure
         self.camera.awb_mode = 'shade'
         self.camera.framerate = int(rate)
-        self.
         logging.info('camera exposure setting:'+str(self.camera.exposure_mode))
         logging.info('camera shutter speed:'+str(self.camera.shutter_speed))
         time.sleep(1)
