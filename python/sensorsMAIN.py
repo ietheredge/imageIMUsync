@@ -7,7 +7,7 @@ import time
 import math
 import RPi.GPIO as GPIO
 import ephem
-import pytest
+
 sys.path.append('.')
 
 
