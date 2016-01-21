@@ -27,7 +27,6 @@ class App:
         self.out = ('home/pi/imageIMUsync/data/'+outputfile)
 
         # setup camera
-
         self.camera.resolution = tuple(int(item) for item in res.split('x') if item.strip())
         self.imformat = imformat
         self.vcodec = vcodec
@@ -44,7 +43,6 @@ class App:
             time.sleep(length)
             GPIO.output(self.CAMLED,True) # Off
             time.sleep(length)
-
     def capimage(self):
         print 'captured image'
         GPIO.output(self.CAMLED,False)

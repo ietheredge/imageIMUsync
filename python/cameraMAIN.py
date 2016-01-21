@@ -46,6 +46,7 @@ except:
 
 def pisync(outpin, inpin, swich):
     GPIO.OUTPUT(outpin, False)
+    sleep(0.5)
     GPIO.OUTPUT(outpin, True)
     GPIO.wait_for_edge(inpin, GPIO.RISING)
 
