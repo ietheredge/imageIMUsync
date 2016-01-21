@@ -40,8 +40,8 @@ def checkaxes(body, observer, imuroll, imupitch, imuyawintsp, itsp, afsp, hp,
     altitude = float(altdeg)+(float(altmin)/60)+(float(altsec)/3600)
     its = (True if (azimuth-precision)<=imuyaw<=(azimuth+precision) else False)
     afs = (True if ((azimuth-precision)+180)<=imuyaw<=((azimuth+precision)+180)
-        or ((azimuth-precision)-180)<=imuyaw<=
-        ((azimuth+precision)-180) else False)
+        or ((azimuth-precision)-180)<=imuyaw<=((azimuth+precision)-180)
+        else False)
     h = (True if (-1*precision)<=imuroll<=precision and (-1*precision)<=
         imupitch<=precision else False)
     if its:
