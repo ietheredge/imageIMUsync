@@ -153,10 +153,13 @@ while True:
 
         ## i2C/ IMU&temperature
         imudata = imu.getIMUData()
-        (ret1, ret2, temp1, temp2) = pressure.pressureRead()
+        (imudata["pressureValid"], imudata["pressure"],
+        imudata["temperatureValid"], imudata["temperature"]) = pressure.pressureRead()
         imuread = imudata["fusionPose"]
-        imuroll, imupitch, imuyaw = (math.degrees(imuread[0])), (math.degrees(
-                                        imuread[1])),(math.degrees(imuread[2]))
+        imuroll, imupitch, imuyaw, temp = (math.degrees(imuread[0]),
+                                            math.degrees(imuread[1]),
+                                            math.degrees(imuread[2]),
+                                            imudata["temperature"])
 
         ## SPI/ depth sensor
         data = ReadChannel(0) #only one device, channel 0
@@ -164,19 +167,20 @@ while True:
         depth = get_depthMeters(spioutvolts)
 
         ## calculate solar elevation
-        rig.elevation = -depth
+        #rig.elevation = -depth
+        rig.elevation = 0 # or just use sealevel
 
         ## get sun locatio nand set camera position LED indicators
         alt, az = checkaxes(sun, rig, imuroll, imupitch, imuyaw, itsp, afsp, hp)
 
         ## time in milliseconds (GMT, convert for local)
-        GMTms = int(round(time.time() * 1000))
-        #print("%i-%i-%i-%i; %f; %f; %f; %f; %f; %s; %s")
-        print("t:%i-%i-%i-%i:r:%f:p:%f:y:%f:d:%f:c:%f:sa:%s:sz:%s" ) #IGOR friendly
-        print("t: %i-%i-%i-%i r: %f p: %f y: %f d: %f c: %f sa: %s sz: %s" %
+        GMTms = int(round(time.time() * 1000));
+        #print("t:%i-%i-%i-%i:r:%f:p:%f:y:%f:d:%f:c:%f:sa:%s:sz:%s" ) #IGOR friendly
+        #print("t: %i-%i-%i-%i r: %f p: %f y: %f d: %f c: %f sa: %s sz: %s" %
+        print("%i-%i-%i-%i; %f; %f; %f; %f; %f; %s; %s" %
         (((int(GMTms)/(1000*60*60)%24)-6),(int(GMTms)/(1000*60)%60),
         (int(GMTms)/1000%60),(int(GMTms)/1000),imuroll,
-        imupitch,imuyaw,depth, temp1,
+        imupitch,imuyaw,depth, temp,
         alt, az))
         time.sleep(poll_interval*1.0/1000.0)s
         ## using print and running the python script in a shell with >> will

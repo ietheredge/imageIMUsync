@@ -57,7 +57,7 @@ syncIN =  25 ##?
 
 # trigger interrupt
 GPIO.setup(triggerGPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-#GPIO.add_event_detect(triggerGPIO, GPIO.BOTH)
+GPIO.add_event_detect(triggerGPIO, GPIO.BOTH)
 GPIO.setup(syncOUT, GPIO.OUT)
 GPIO.setup(syncIN, GPIO.IN)
 ## set directory
@@ -73,17 +73,21 @@ camera.settings('png', 'h264', '1920x1080', 'sports', 30, 1, 'output%s' %
                 str(time.asctime(time.localtime(time.time()))))
 camera.signal(10, 0.1)
 
-GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING) #wait for triger to enter loop
 while True:
     down.main()
-    pisync(syncOUT, syncIN)
-    try:
-        camera.capimage()
-        camera.signal(2, 0.2)
-        time.sleep(0.2)
-    except KeyboardInterrupt:
-        print 'keyboard interrup--exiting'
-        break
+    GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING) #wait for triger to enter loop
+    while True:
+        down.main()
+        pisync(syncOUT, syncIN)
+        if GPIO.GPIO.event_detected(triggerGPIO):
+            break
+        try:
+            camera.capimage()
+            camera.signal(2, 0.2)
+            time.sleep(0.2)
+        except KeyboardInterrupt:
+            print 'keyboard interrup--exiting'
+            break
 
 
 
