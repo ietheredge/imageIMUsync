@@ -13,11 +13,11 @@ sys.path.append('.')
 
 #ephem functions
 def converttodecimal(lat, lon):
-    """ Return decimal equivalents of non-decimal latitude and longitude.
+    #""" Return decimal equivalents of non-decimal latitude and longitude.
 
-    >>> converttodecimal("27:36:20.80:N","95:45:20.00:W")
-    27.61, 95.76
-    """
+    #>>> converttodecimal("27:36:20.80:N","95:45:20.00:W")
+    #27.61, 95.76
+    #"""
     ltdeg, ltmin, ltsec, lthem = lat.split(":")
     lndeg, lnmin, lnsec, lnhem = lon.split(":")
     latitudeD = (1 if lthem=="N" else -1)*(float(ltdeg)+(float(ltmin)/60)+
@@ -27,7 +27,7 @@ def converttodecimal(lat, lon):
     return round(latitudeD, 2), round(longitudeD, 2)
 def checkaxes(body, observer, imuroll, imupitch, imuyawintsp, itsp, afsp, hp,
                 precision=22.5):
-    ''' NEEDS tests '''
+    #''' NEEDS tests '''
     observer.date = time.strftime("%Y/%m/%d %H:%M:%S"  , time.gmtime())
     print observer.date
     sun.compute(observer)
@@ -59,30 +59,30 @@ def checkaxes(body, observer, imuroll, imupitch, imuyawintsp, itsp, afsp, hp,
     return sunalt, sunaz
 ## SPI / depth sensor functions
 def ReadChannel(channel):
-    """ Returns the bytestream from the spi.
+    #""" Returns the bytestream from the spi.
 
-    >>> ReadChannel(0):
-    1
+    #>>> ReadChannel(0):
+    #1
 
-    """
+    #"""
     adc = spi.xfer2([1,(8+channel)<<4,0]) #<<X is 2**X
     data = ((adc[1]&3) << 8) + adc[2]
     return data
 def ConvertVolts(data,places=2):
-    """ Convert SPI output to voltage.
+    #""" Convert SPI output to voltage.
 
-    >>> ConvertVolts(0, places=2)
-    0.00
-    >>> ConvertVolts(-1, places=2)
-    0.00
-    >>> ConvertVolts(1023, places=2)
-    5.00
-    """
+    #>>> ConvertVolts(0, places=2)
+    #0.00
+    #>>> ConvertVolts(-1, places=2)
+    #0.00
+    #>>> ConvertVolts(1023, places=2)
+    #5.00
+    #"""
     volts = (data * 5.0) / float(1023)
     volts = round(volts,places)
     return volts
 def get_depthMeters(Vout):
-    ''' NEEDS tests '''
+    #''' NEEDS tests '''
     if Vout < 0:
         return 0
     else:
@@ -145,7 +145,7 @@ imu.setAccelEnable(True)
 imu.setCompassEnable(True)
 poll_interval = imu.IMUGetPollInterval()
 print("Recommended Poll Interval: %dmS\n" % poll_interval)
-
+print "t; r; p; y; d; c; sa; sz"
 while True:
 
     if imu.IMURead():
@@ -171,19 +171,21 @@ while True:
 
         ## time in milliseconds (GMT, convert for local)
         GMTms = int(round(time.time() * 1000))
+        #print("%i-%i-%i-%i; %f; %f; %f; %f; %f; %s; %s")
+        print("t:%i-%i-%i-%i:r:%f:p:%f:y:%f:d:%f:c:%f:sa:%s:sz:%s" ) #IGOR friendly
         print("t: %i-%i-%i-%i r: %f p: %f y: %f d: %f c: %f sa: %s sz: %s" %
         (((int(GMTms)/(1000*60*60)%24)-6),(int(GMTms)/(1000*60)%60),
         (int(GMTms)/1000%60),(int(GMTms)/1000),imuroll,
         imupitch,imuyaw,depth, temp1,
         alt, az))
-        time.sleep(poll_interval*1.0/1000.0)
+        time.sleep(poll_interval*1.0/1000.0)s
         ## using print and running the python script in a shell with >> will
         ## output to a a file, you can replace the prints with writing to a
         ## file directly, if you want.
 
         #else:
             #continue
-if __name__ == "__main__":
-    if sys.argv[1] == 'doctest':
-        import doctest
-        doctest.testmod()
+#if __name__ == "__main__":
+    #if sys.argv[1] == 'doctest':
+        #import doctest
+        #doctest.testmod()

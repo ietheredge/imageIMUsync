@@ -6,8 +6,13 @@ class App():
     def __init__(self):
     	print 'soft reset started'
         GPIO.setmode(GPIO.BCM)
+        self.pin0 = 5
         self.pin = 6
         GPIO.setup(self.pin, GPIO.IN)
+
+        GPIO.setup(self.pin0, GPIO.OUT)
+    	GPIO.output(self.pin0, GPIO.HIGH)
+
         GPIO.remove_event_detect(self.pin)
         GPIO.add_event_detect(self.pin, GPIO.BOTH)
 
