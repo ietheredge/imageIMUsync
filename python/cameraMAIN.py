@@ -50,7 +50,7 @@ def pisync(outpin, inpin):
     time.sleep(1.0)
     GPIO.output(outpin, True)
     print 'signalled'
-    GPIO.event_detected(inpin, GPIO.RISING)
+    GPIO.event_detected(inpin)
     print 'synced'
 
 GPIO.setmode(GPIO.BCM)
@@ -63,6 +63,7 @@ GPIO.setup(triggerGPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.add_event_detect(triggerGPIO, GPIO.FALLING)
 GPIO.setup(syncOUT, GPIO.OUT)
 GPIO.setup(syncIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.add_event_detect(syncin, GPIO.RISING)
 ## set directory
 os.chdir('/')
 
@@ -80,7 +81,7 @@ while True:
     down.main()
     GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING) #wait for triger to enter loop
     while True:
-        if GPIO.event_detected(triggerGPIO, GPIO.FALLING):
+        if GPIO.event_detected(triggerGPIO):
             break
         try:
             camera.capimage()
