@@ -80,6 +80,7 @@ camera.signal(10, 0.1)
 while True:
     down.main()
     GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING) #wait for triger to enter loop
+    sleep(2.0)
     while True:
         if GPIO.event_detected(triggerGPIO):
             break
