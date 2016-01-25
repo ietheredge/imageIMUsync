@@ -80,8 +80,6 @@ while True:
     down.main()
     GPIO.wait_for_edge(triggerGPIO, GPIO.BOTH) #wait for triger to enter loop
     while True:
-        down.main()
-        pisync(syncOUT, syncIN)
         if GPIO.GPIO.event_detected(triggerGPIO):
             break
         try:
@@ -91,6 +89,9 @@ while True:
         except KeyboardInterrupt:
             print 'keyboard interrup--exiting'
             break
+        down.main()
+        pisync(syncOUT, syncIN)
+
 
 
 
