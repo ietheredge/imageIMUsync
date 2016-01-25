@@ -63,7 +63,7 @@ GPIO.setup(triggerGPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.add_event_detect(triggerGPIO, GPIO.FALLING)
 GPIO.setup(syncOUT, GPIO.OUT)
 GPIO.setup(syncIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.add_event_detect(syncin, GPIO.RISING)
+GPIO.add_event_detect(syncIN, GPIO.RISING)
 ## set directory
 os.chdir('/')
 
