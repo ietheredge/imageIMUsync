@@ -78,21 +78,24 @@ camera.settings('png', 'h264', '1920x1080', 'sports', 30, 1, 'output%s' %
 camera.signal(10, 0.1)
 
 while True:
+    print 'in out loop'
     down.main()
     GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING) #wait for triger to enter loop
     time.sleep(2.0)
     while True:
+        print 'in in loop'
         if GPIO.event_detected(triggerGPIO):
             break
-        try:
-            camera.capimage()
-            camera.signal(2, 0.2)
-            time.sleep(0.2)
-        except KeyboardInterrupt:
-            print 'keyboard interrup--exiting'
-            break
-        down.main()
-        pisync(syncOUT, syncIN)
+        else:
+            try:
+                camera.capimage()
+                camera.signal(2, 0.2)
+                time.sleep(0.2)
+            except KeyboardInterrupt:
+                print 'keyboard interrup--exiting'
+                break
+            down.main()
+            pisync(syncOUT, syncIN)
 
 
 
