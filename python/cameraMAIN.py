@@ -44,7 +44,7 @@ except:
     testloop = False
 '''
 
-def pisync(outpin, inpin, swich):
+def pisync(outpin, inpin):
     GPIO.OUTPUT(outpin, False)
     sleep(0.5)
     GPIO.OUTPUT(outpin, True)
