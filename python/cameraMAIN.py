@@ -81,8 +81,8 @@ while True:
     print 'in out loop'
     down.main()
     GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING) #wait for triger to enter loop
-    GPIO.add_event_detect(triggerGPIO, GPIO.FALLING)
     time.sleep(2.0)
+    GPIO.add_event_detect(triggerGPIO, GPIO.FALLING)
     while True:
         print 'in in loop'
         if GPIO.event_detected(triggerGPIO):
