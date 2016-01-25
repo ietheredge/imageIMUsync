@@ -46,10 +46,12 @@ except:
 
 def pisync(outpin, inpin):
     GPIO.output(outpin, False)
+    print 'reset'
     time.sleep(0.5)
     GPIO.output(outpin, True)
+    print 'signalled'
     GPIO.wait_for_edge(inpin, GPIO.RISING)
-    print synced
+    print 'synced'
 
 GPIO.setmode(GPIO.BCM)
 triggerGPIO = 23
