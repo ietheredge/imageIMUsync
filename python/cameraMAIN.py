@@ -86,6 +86,7 @@ while True:
     while True:
         print 'in in loop'
         if GPIO.event_detected(triggerGPIO):
+            GPIO.remove_event_detect(triggerGPIO)
             break
         else:
             try:
