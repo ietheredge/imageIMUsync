@@ -60,7 +60,7 @@ syncIN =  25 ##?
 
 # trigger interrupt
 GPIO.setup(triggerGPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.add_event_detect(triggerGPIO, GPIO.FALLING)
+
 GPIO.setup(syncOUT, GPIO.OUT)
 GPIO.setup(syncIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.add_event_detect(syncIN, GPIO.RISING)
@@ -81,6 +81,7 @@ while True:
     print 'in out loop'
     down.main()
     GPIO.wait_for_edge(triggerGPIO, GPIO.FALLING) #wait for triger to enter loop
+    GPIO.add_event_detect(triggerGPIO, GPIO.FALLING)
     time.sleep(2.0)
     while True:
         print 'in in loop'
