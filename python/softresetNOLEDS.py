@@ -28,8 +28,8 @@ class App():
         time.sleep(1.5)
 
         # send to halt state
-        call(["sudo", "halt"])
         GPIO.cleanup()
+        call(["sudo", "halt"])
         sys.exit()
 
 
