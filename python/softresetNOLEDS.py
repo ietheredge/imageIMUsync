@@ -20,6 +20,8 @@ class App():
         print 'served'
         if GPIO.event_detected(self.pin):
             App.shutitdown(self)
+        else:
+            pass
 
     def shutitdown(self):
         print 'trigger'
