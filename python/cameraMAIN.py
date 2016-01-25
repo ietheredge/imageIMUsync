@@ -49,6 +49,7 @@ def pisync(outpin, inpin):
     time.sleep(0.5)
     GPIO.output(outpin, True)
     GPIO.wait_for_edge(inpin, GPIO.RISING)
+    print synced
 
 GPIO.setmode(GPIO.BCM)
 triggerGPIO = 23
