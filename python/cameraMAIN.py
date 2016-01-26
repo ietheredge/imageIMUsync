@@ -48,14 +48,14 @@ except:
 delta = []
 
 def pisyncsignal(outpin, inpin):
-    GPIO.add_event_detect(inpin, GPIO.FALLING)
+    GPIO.add_event_detect(inpin, GPIO.RISING)
     GPIO.output(outpin, False)
     print 'reset'
     time.sleep(1.0)
     GPIO.output(outpin, True)
 
 def pisynclisten(inpin):
-    GPIO.wait_for_edge(inpin)
+    GPIO.event_detected(inpin)
     print 'synced'
 
 
