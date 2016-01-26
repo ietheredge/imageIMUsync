@@ -34,6 +34,7 @@ def checkaxes(body, observer, imuroll, imupitch, imuyaw, itsp, afsp, hp,
     ## this function is not very pythonic, can be improved upon greatly....
     sunalt = str(sun.alt)
     sunaz = str(sun.az)
+    print sunalt
     altdeg, altmin, altsec = sunalt.split("-")
     azdeg, azmin, azsec = sunaz.split("-")
     azimuth = float(azdeg)+(float(azmin)/60)+(float(azsec)/3600)
