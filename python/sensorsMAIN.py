@@ -29,18 +29,25 @@ def checkaxes(body, observer, imuroll, imupitch, imuyaw, itsp, afsp, hp,
                 precision=22.5):
     #''' NEEDS tests '''
     observer.date = time.strftime("%Y/%m/%d %H:%M:%S"  , time.gmtime())
-    print observer.date
+    #print observer.date
     sun.compute(observer)
     ## this function is not very pythonic, can be improved upon greatly....
     sunalt = str(sun.alt)
     sunaz = str(sun.az)
-    print sunalt
+    #print sunalt
     altdeg, altmin, altsec = sunalt.split(":")
     azdeg, azmin, azsec = sunaz.split(":")
     azimuth = float(azdeg)+(float(azmin)/60)+(float(azsec)/3600)
     altitude = float(altdeg)+(float(altmin)/60)+(float(altsec)/3600)
-    its = (True if (azimuth-precision)<=imuyaw<=(azimuth+precision) else False)
-    afs = (True if ((azimuth-precision)+180)<=imuyaw<=((azimuth+precision)+180)
+    its = (True if (math.cos(azimuth*math.pi/180)*cos(imuyaw*math.pi/180))+
+            math.sin(azimuth*math.pi/180)*math.sin(imuyaw*math.pi/180))
+            >cos(precision*math.pi/180) else False)
+    afs = (True if (math.cos((azimuth+180)*math.pi/180)*math.cos(imuyaw*math.pi/
+            180)+math.sin((azimuth+180)*math.pi/180)*math.sin(imuyaw*math.pi/
+            180))>cos(precision*math.pi/180) else False)
+    ndafs = (True if (cos((azimuth+90)*math.pi/180)*mat.cos(imuyaw*math.pi/180)+
+            math.sin((azimuth+90)*math.pi/180)*sin(imuyaw*math.pi/180))
+            >cos(precision*math.pi/180) else False)
         or ((azimuth-precision)-180)<=imuyaw<=((azimuth+precision)-180)
         else False)
     h = (True if (-1*precision)<=imuroll<=precision and (-1*precision)<=
@@ -51,10 +58,15 @@ def checkaxes(body, observer, imuroll, imupitch, imuyaw, itsp, afsp, hp,
         GPIO.output(afsp, GPIO.HIGH)
     if h:
         GPIO.output(hp, GPIO.HIGH)
+    if ndafs:
+        GPIO.output(itsp, GPIO.HIGH)
+        GPIO.output(afsp, GPIO.HIGH)
     if not its:
-        GPIO.output(itsp, GPIO.LOW)
+        if not ndafs:
+            GPIO.output(itsp, GPIO.LOW)
     if not afs:
-        GPIO.output(afsp, GPIO.LOW)
+        if not adfs:
+            GPIO.output(afsp, GPIO.LOW)
     if not h:
         GPIO.output(hp, GPIO.LOW)
     return sunalt, sunaz
