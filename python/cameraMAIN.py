@@ -34,6 +34,7 @@ import sys
 import softresetNOLEDS as softreset
 import time
 import camera
+from threading import Thread
 
 '''
 try:
@@ -45,18 +46,16 @@ except:
 '''
 delta = []
 
-def pisync(outpin, inpin):
-    #clock.getTime()
-    #time.
-    #GPIO.add_event_detect(syncIN, GPIO.RISING)
+def pisyncsignal(outpin):
     GPIO.output(outpin, False)
     print 'reset'
     time.sleep(1.0)
     GPIO.output(outpin, True)
-    print 'signalled'
+
+def pisynclisten(inpin):
     GPIO.wait_for_edge(inpin, GPIO.RISING)
     print 'synced'
-    #GPIO.remove_event_detect(syncIN)
+
 
 GPIO.setmode(GPIO.BCM)
 triggerGPIO = 23
@@ -101,7 +100,8 @@ while True:
                 print 'keyboard interrup--exiting'
                 break
             down.main()
-            pisync(syncOUT, syncIN)
+            Thread(target = pisynclisten(syncIN)).start()
+            Thread(target = pisyncsignal(syncOUT)).start()
 
 
 
