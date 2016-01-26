@@ -35,8 +35,8 @@ def checkaxes(body, observer, imuroll, imupitch, imuyaw, itsp, afsp, hp,
     sunalt = str(sun.alt)
     sunaz = str(sun.az)
     print sunalt
-    altdeg, altmin, altsec = sunalt.split("-")
-    azdeg, azmin, azsec = sunaz.split("-")
+    altdeg, altmin, altsec = sunalt.split(":")
+    azdeg, azmin, azsec = sunaz.split(":")
     azimuth = float(azdeg)+(float(azmin)/60)+(float(azsec)/3600)
     altitude = float(altdeg)+(float(altmin)/60)+(float(altsec)/3600)
     its = (True if (azimuth-precision)<=imuyaw<=(azimuth+precision) else False)
