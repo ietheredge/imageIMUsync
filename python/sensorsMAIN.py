@@ -48,8 +48,6 @@ def checkaxes(body, observer, imuroll, imupitch, imuyaw, itsp, afsp, hp,
     ndafs = (True if (cos((azimuth+90)*math.pi/180)*mat.cos(imuyaw*math.pi/180)+
             math.sin((azimuth+90)*math.pi/180)*sin(imuyaw*math.pi/180))
             >cos(precision*math.pi/180) else False)
-        or ((azimuth-precision)-180)<=imuyaw<=((azimuth+precision)-180)
-        else False)
     h = (True if (-1*precision)<=imuroll<=precision and (-1*precision)<=
         imupitch<=precision else False)
     if its:
