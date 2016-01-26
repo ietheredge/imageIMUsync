@@ -47,15 +47,17 @@ except:
 '''
 delta = []
 
-def pisyncsignal(outpin):
+def pisyncsignal(outpin, inpin):
+    GPIO.add_event_detect(inpin, GPIO.FALLING)
     GPIO.output(outpin, False)
     print 'reset'
     time.sleep(1.0)
     GPIO.output(outpin, True)
 
 def pisynclisten(inpin):
-    GPIO.wait_for_edge(inpin, GPIO.RISING)
+    GPIO.wait_for_edge(inpin)
     print 'synced'
+
 
 
 GPIO.setmode(GPIO.BCM)
@@ -101,10 +103,9 @@ while True:
                 print 'keyboard interrup--exiting'
                 break
             down.main()
-            Thread(target = pisyncsignal(syncOUT)).start()
+            Thread(target = pisyncsignal(syncOUT, syncIN)).start()
             Thread(target = pisynclisten(syncIN)).start()
-            Thread.run()
-            Thread.join()
+            GPIO.remove_event_detect(inpin)
 
 
 
