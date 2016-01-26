@@ -25,7 +25,7 @@ def converttodecimal(lat, lon):
     longitudeD = (1 if lnhem=="E" else -1)*(float(lndeg)+(float(lnmin)/60)+
     (float(lnsec)/3600))
     return round(latitudeD, 2), round(longitudeD, 2)
-def checkaxes(body, observer, imuroll, imupitch, imuyawintsp, itsp, afsp, hp,
+def checkaxes(body, observer, imuroll, imupitch, imuyaw, itsp, afsp, hp,
                 precision=22.5):
     #''' NEEDS tests '''
     observer.date = time.strftime("%Y/%m/%d %H:%M:%S"  , time.gmtime())
