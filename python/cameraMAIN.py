@@ -105,7 +105,7 @@ while True:
             down.main()
             Thread(target = pisyncsignal(syncOUT, syncIN)).start()
             Thread(target = pisynclisten(syncIN)).start()
-            GPIO.remove_event_detect(inpin)
+            GPIO.remove_event_detect(syncIN)
 
 
 
