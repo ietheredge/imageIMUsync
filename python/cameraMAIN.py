@@ -101,8 +101,8 @@ while True:
                 print 'keyboard interrup--exiting'
                 break
             down.main()
-            Thread(target = pisynclisten(syncIN)).start()
             Thread(target = pisyncsignal(syncOUT)).start()
+            Thread(target = pisynclisten(syncIN)).start()
             Thread.run()
             Thread.join()
 
