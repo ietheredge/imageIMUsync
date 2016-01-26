@@ -34,6 +34,7 @@ import sys
 import softresetNOLEDS as softreset
 import time
 import camera
+import threading
 from threading import Thread
 
 '''
@@ -102,6 +103,8 @@ while True:
             down.main()
             Thread(target = pisynclisten(syncIN)).start()
             Thread(target = pisyncsignal(syncOUT)).start()
+            Thread.run()
+            Thread.join()
 
 
 
