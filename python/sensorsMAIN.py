@@ -39,15 +39,15 @@ def checkaxes(body, observer, imuroll, imupitch, imuyaw, itsp, afsp, hp,
     azdeg, azmin, azsec = sunaz.split(":")
     azimuth = float(azdeg)+(float(azmin)/60)+(float(azsec)/3600)
     altitude = float(altdeg)+(float(altmin)/60)+(float(altsec)/3600)
-    its = (True if (math.cos(azimuth*math.pi/180)*cos(imuyaw*math.pi/180))+
+    its = (True if (math.cos(azimuth*math.pi/180)*math.cos(imuyaw*math.pi/180))+
             math.sin(azimuth*math.pi/180)*math.sin(imuyaw*math.pi/180))
-            >cos(precision*math.pi/180) else False)
+            >math.cos(precision*math.pi/180) else False)
     afs = (True if (math.cos((azimuth+180)*math.pi/180)*math.cos(imuyaw*math.pi/
             180)+math.sin((azimuth+180)*math.pi/180)*math.sin(imuyaw*math.pi/
-            180))>cos(precision*math.pi/180) else False)
-    ndafs = (True if (cos((azimuth+90)*math.pi/180)*math.cos(imuyaw*math.pi/180)+
-            math.sin((azimuth+90)*math.pi/180)*sin(imuyaw*math.pi/180))
-            >cos(precision*math.pi/180) else False)
+            180))>math.cos(precision*math.pi/180) else False)
+    ndafs = (True if (math.cos((azimuth+90)*math.pi/180)*math.cos(imuyaw*math.pi/180)+
+            math.sin((azimuth+90)*math.pi/180)*math.sin(imuyaw*math.pi/180))
+            >math.cos(precision*math.pi/180) else False)
     h = (True if (-1*precision)<=imuroll<=precision and (-1*precision)<=
         imupitch<=precision else False)
     if its:
