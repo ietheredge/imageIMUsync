@@ -43,17 +43,20 @@ try:
 except:
     testloop = False
 '''
+delta = []
 
 def pisync(outpin, inpin):
-    GPIO.add_event_detect(syncIN, GPIO.RISING)
+    #clock.getTime()
+    #time.
+    #GPIO.add_event_detect(syncIN, GPIO.RISING)
     GPIO.output(outpin, False)
     print 'reset'
     time.sleep(1.0)
     GPIO.output(outpin, True)
     print 'signalled'
-    GPIO.event_detected(inpin)
+    GPIO.wait_for_edge(inpin, GPIO.RISING)
     print 'synced'
-    GPIO.remove_event_detect(syncIN)
+    #GPIO.remove_event_detect(syncIN)
 
 GPIO.setmode(GPIO.BCM)
 triggerGPIO = 23
