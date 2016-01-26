@@ -182,7 +182,7 @@ while True:
         (int(GMTms)/1000%60),(int(GMTms)/1000),imuroll,
         imupitch,imuyaw,depth, temp,
         alt, az))
-        time.sleep(poll_interval*1.0/1000.0)s
+        time.sleep(poll_interval*1.0/1000.0)
         ## using print and running the python script in a shell with >> will
         ## output to a a file, you can replace the prints with writing to a
         ## file directly, if you want.
