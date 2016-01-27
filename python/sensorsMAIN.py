@@ -40,7 +40,7 @@ def checkaxes(body, observer, imuroll, imupitch, imuyaw, itsp, afsp, hp,
     azimuth = float(azdeg)+(float(azmin)/60)+(float(azsec)/3600)
     altitude = float(altdeg)+(float(altmin)/60)+(float(altsec)/3600)
     its = (True if (math.cos(azimuth*math.pi/180)*math.cos(imuyaw*math.pi/180))+
-            math.sin(azimuth*math.pi/180)*math.sin(imuyaw*math.pi/180))
+            math.sin(azimuth*math.pi/180)*math.sin(imuyaw*math.pi/180)
             >math.cos(precision*math.pi/180) else False)
     afs = (True if (math.cos((azimuth+180)*math.pi/180)*math.cos(imuyaw*math.pi/
             180)+math.sin((azimuth+180)*math.pi/180)*math.sin(imuyaw*math.pi/
