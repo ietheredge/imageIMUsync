@@ -107,6 +107,7 @@ while True:
             break
         else:
             # sync pis
+            print GPIO.input(syncIN)
             txrx(syncIN, syncOUT)
             try:
                 camera.capimage()
