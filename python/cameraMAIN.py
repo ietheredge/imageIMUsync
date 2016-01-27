@@ -52,21 +52,22 @@ def txrx(inpin, outpin):
     while True:
         if GPIO.input(inpin):
             print 'input true'
-            if GPIO.output(outpin, True):
+            if GPIO.output(outpin, GPIO.HIGH):
                 print 'output true too'
                 print "synced"
                 break
             else:
-               GPIO.output(outpin, True)
-               time.sleep(0.2)
+                print 'set output true'
+                GPIO.output(outpin, GPIO.HIGH)
+                time.sleep(0.2)
         else:
             print 'input false'
-            if GPIO.output(outpin, False):
+            if GPIO.output(outpin, GPIO.LOW):
                 print 'output false too'
                 time.sleep(0.2)
             else:
                 print 'set input true'
-                GPIO.output(outpin, True)
+                GPIO.output(outpin, GPIO.HIGH)
                 time.sleep(0.2)
 
 GPIO.setmode(GPIO.BCM)
