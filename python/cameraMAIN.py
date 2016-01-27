@@ -48,7 +48,8 @@ except:
 
 def txrx(inpin, outpin):
     print "sync attempt"
-    GPIO.output(outpin, False)
+    GPIO.output(outpin, True)
+    print GPIO.input(inpin)
     while True:
         if GPIO.input(inpin):
             print 'input true'
@@ -59,14 +60,14 @@ def txrx(inpin, outpin):
             else:
                 print 'set output true'
                 GPIO.output(outpin, GPIO.HIGH)
-                time.sleep(0.2)
+
         else:
             print 'input false'
             if GPIO.output(outpin, GPIO.LOW):
                 print 'output false too'
                 time.sleep(0.2)
             else:
-                print 'set input true'
+                print 'set output true'
                 GPIO.output(outpin, GPIO.HIGH)
                 time.sleep(0.2)
 
