@@ -58,14 +58,16 @@ def txrx(inpin, outpin):
                 break
             else:
                GPIO.output(outpin, True)
+               time.sleep(0.2)
         else:
             print 'input false'
             if GPIO.output(outpin, False):
                 print 'output false too'
-                pass
+                time.sleep(0.2)
             else:
                 print 'set input true'
                 GPIO.output(outpin, True)
+                time.sleep(0.2)
 
 GPIO.setmode(GPIO.BCM)
 triggerGPIO = 23
