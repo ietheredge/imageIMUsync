@@ -63,7 +63,7 @@ def checkaxes(body, observer, imuroll, imupitch, imuyaw, itsp, afsp, hp,
         if not ndafs:
             GPIO.output(itsp, GPIO.LOW)
     if not afs:
-        if not adfs:
+        if not ndafs:
             GPIO.output(afsp, GPIO.LOW)
     if not h:
         GPIO.output(hp, GPIO.LOW)
