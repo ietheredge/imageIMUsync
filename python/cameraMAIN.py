@@ -84,7 +84,7 @@ camera = camera.App()
 camera.settings('png', 'h264', '1920x1080', 'sports', 30, 1, 'output%s' %
                 str(time.asctime(time.localtime(time.time()))))
 camera.signal(10, 0.1)
-
+GPIO.output(syncOUT, True)
 while True:
     #print 'in out loop'
     down.main()
