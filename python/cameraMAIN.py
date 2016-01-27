@@ -45,20 +45,22 @@ try:
 except:
     testloop = False
 '''
-delta = []
 
-def pisyncsignal(outpin, inpin):
-    GPIO.add_event_detect(inpin, GPIO.RISING)
+def txrx(inpin, outpin):
+    print "sync attempt"
     GPIO.output(outpin, False)
-    print 'reset'
-    time.sleep(1.0)
-    GPIO.output(outpin, True)
-
-def pisynclisten(inpin):
-    GPIO.event_detected(inpin)
-    print 'synced'
-
-
+    while True:
+        if GPIO.input(inpin):
+            if GPIO.output(outpin, True):
+                print "synced"
+                break
+            else:
+               GPIO.output(outpin, True)
+        else:
+            if GPIO.output(outpin, False):
+                pass
+            else:
+                GPIO.output(outpin, True)
 
 GPIO.setmode(GPIO.BCM)
 triggerGPIO = 23
@@ -68,7 +70,7 @@ syncIN =  25 ##?
 # trigger interrupt
 GPIO.setup(triggerGPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(syncOUT, GPIO.OUT)
-GPIO.setup(syncIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(syncIN, GPIO.IN)
 
 ## set directory
 os.chdir('/')
@@ -95,6 +97,8 @@ while True:
             GPIO.remove_event_detect(triggerGPIO)
             break
         else:
+            # sync pis
+            txrx(syncIN, syncOUT)
             try:
                 camera.capimage()
                 camera.signal(2, 0.2)
@@ -103,10 +107,8 @@ while True:
                 print 'keyboard interrup--exiting'
                 break
             down.main()
-            Thread(target = pisyncsignal(syncOUT, syncIN)).start()
-            Thread(target = pisynclisten(syncIN)).start()
-            GPIO.remove_event_detect(syncIN)
-
+            GPIO.remove_event_detect(syncIN) #
+            GPIO.output(syncOUT, True)#
 
 
 
