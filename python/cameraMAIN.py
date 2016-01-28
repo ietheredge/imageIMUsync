@@ -46,16 +46,15 @@ except:
     testloop = False
 '''
 
-def master(outpin, inpin):
+def master(outpin):
     GPIO.output(outpin, GPIO.HIGH)
-    GPIO.wait_for_edge(inpin, GPIO.RISING)
 
-def reset(outpin, inpin):
+def reset(outpin):
     GPIO.output(outpin, GPIO.LOW)
 
-def slave(inpin, outpin):
+def slave(inpin):
     GPIO.wait_for_edge(inpin, GPIO.RISING)
-    GPIO.output(outpin, GPIO.HIGH)
+
 
 
 GPIO.setmode(GPIO.BCM)
@@ -97,9 +96,14 @@ while True:
         else:
             # sync pis
             # if master
-            master(syncOUT, syncIN)
+            master(syncOUT)
+            reset(syncOUT)
+            slave(syncIN)
+
             # if slave
             slave(syncIN, syncOUT)
+            reset(syncOUT)
+            master(syncOUT)
             try:
                 camera.capimage()
                 camera.signal(2, 0.2)
