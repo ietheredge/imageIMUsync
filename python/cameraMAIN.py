@@ -101,7 +101,7 @@ while True:
             slave(syncIN)
 
             # if slave
-            slave(syncIN, syncOUT)
+            slave(syncIN)
             reset(syncOUT)
             master(syncOUT)
             try:
