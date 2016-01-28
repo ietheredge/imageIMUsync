@@ -48,27 +48,30 @@ except:
 
 def txrx(inpin, outpin):
     #print "sync attempt"
-    print GPIO.output(outpin, GPIO.HIGH)
+    GPIO.output(outpin, GPIO.LOW)
+    goph = False
     #print GPIO.input(inpin)
     while True:
         if GPIO.input(inpin):
             #print 'input true'
-            if GPIO.output(outpin, GPIO.HIGH):
+            if goph:
                 #print 'output true too'
-                #print "synced"
+                print "synced"
                 break
             else:
                 #print 'set output true'
                 GPIO.output(outpin, GPIO.HIGH)
-
+                goph = True
+                time.sleep(0.2)
         else:
             #print 'input false'
-            if GPIO.output(outpin, GPIO.LOW):
+            if not goph:
                 #print 'output false too'
                 time.sleep(0.2)
             else:
                 #print 'set output true'
                 GPIO.output(outpin, GPIO.HIGH)
+                goph = True
                 time.sleep(0.2)
 
 GPIO.setmode(GPIO.BCM)
