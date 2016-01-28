@@ -46,33 +46,15 @@ except:
     testloop = False
 '''
 
-def txrx(inpin, outpin):
-    #print "sync attempt"
+def master(outpin):
+    GPIO.output(outpin, GPIO.HIGH)
+
+def reset(outpin, inpin):
     GPIO.output(outpin, GPIO.LOW)
-    goph = False
-    #print GPIO.input(inpin)
-    while True:
-        if GPIO.input(inpin):
-            #print 'input true'
-            if goph:
-                #print 'output true too'
-                print "synced"
-                break
-            else:
-                #print 'set output true'
-                GPIO.output(outpin, GPIO.HIGH)
-                goph = True
-                time.sleep(0.2)
-        else:
-            #print 'input false'
-            if not goph:
-                #print 'output false too'
-                time.sleep(0.2)
-            else:
-                #print 'set output true'
-                GPIO.output(outpin, GPIO.HIGH)
-                goph = True
-                time.sleep(0.2)
+
+def slave(inpin):
+    GPIO.wait_for_edge(inpin, GPIO.RISING)
+
 
 GPIO.setmode(GPIO.BCM)
 triggerGPIO = 23
@@ -112,12 +94,15 @@ while True:
             break
         else:
             # sync pis
-            print GPIO.input(syncIN)
-            txrx(syncIN, syncOUT)
+            # if master
+            master(syncOUT)
+            # if slave
+            slave(syncIN)
             try:
                 camera.capimage()
                 camera.signal(2, 0.2)
                 time.sleep(0.2)
+                reset(syncOUT, syncIN)
             except KeyboardInterrupt:
                 print 'keyboard interrup--exiting'
                 break
