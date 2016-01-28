@@ -96,8 +96,8 @@ while True:
         else:
             # sync pis
             # if master
-            master(syncOUT)
             reset(syncOUT)
+            master(syncOUT)
             slave(syncIN)
 
             # if slave
