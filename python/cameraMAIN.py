@@ -96,19 +96,15 @@ while True:
         else:
             # sync pis
             # if master
-            reset(syncOUT)
+            time.sleep(0.5)
             master(syncOUT)
-            slave(syncIN)
-
             # if slave
             slave(syncIN)
-            reset(syncOUT)
-            master(syncOUT)
             try:
                 camera.capimage()
                 camera.signal(2, 0.2)
                 time.sleep(0.2)
-                reset(syncOUT, syncIN)
+                reset(syncOUT) #if master
             except KeyboardInterrupt:
                 print 'keyboard interrup--exiting'
                 break

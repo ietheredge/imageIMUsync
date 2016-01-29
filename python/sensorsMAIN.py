@@ -97,12 +97,15 @@ def get_depthMeters(Vout):
     if Vout < 0:
         return 0
     else:
-        return ((((Vout/5)-0.04)/0.000901)-(1.01*(10**5)))/(1029*9.8)
+        return (((Vout/5)-0.04)/0.000901)/(1029*9.8/1000)
 
 #@pytest.mark.sensortest
 #def test_answer():
     #assert get_depthMeters(0) == 0
     #assert converttodecimal("27:36:20.80:N","95:45:20.00:W") == 27.61, 95.76
+
+
+print (time.strftime("%d/%m/%Y"))
 
 #ephem site location info
 try:
@@ -156,6 +159,7 @@ imu.setAccelEnable(True)
 imu.setCompassEnable(True)
 poll_interval = imu.IMUGetPollInterval()
 print("Recommended Poll Interval: %dmS\n" % poll_interval)
+
 print "t; r; p; y; d; c; sa; sz"
 while True:
 
@@ -179,7 +183,7 @@ while True:
 
         ## calculate solar elevation
         #rig.elevation = -depth
-        rig.elevation = 0 # or just use sealevel
+        rig.elevation = -depth # or just use sealevel
 
         ## get sun locatio nand set camera position LED indicators
         alt, az = checkaxes(sun, rig, imuroll, imupitch, imuyaw, itsp, afsp, hp)
@@ -188,10 +192,10 @@ while True:
         GMTms = int(round(time.time() * 1000));
         #print("t:%i-%i-%i-%i:r:%f:p:%f:y:%f:d:%f:c:%f:sa:%s:sz:%s" ) #IGOR friendly
         #print("t: %i-%i-%i-%i r: %f p: %f y: %f d: %f c: %f sa: %s sz: %s" %
-        print("%i-%i-%i-%i; %f; %f; %f; %f; %f; %s; %s" %
+        print("%i-%i-%i-%i; %f; %f; %f; %f; %f; %f; %s; %s" %
         (((int(GMTms)/(1000*60*60)%24)-6),(int(GMTms)/(1000*60)%60),
         (int(GMTms)/1000%60),(int(GMTms)/1000),imuroll,
-        imupitch,imuyaw,depth, temp,
+        imupitch,imuyaw, depth, spioutvolts, temp,
         alt, az))
         time.sleep(poll_interval*1.0/1000.0)
         ## using print and running the python script in a shell with >> will
