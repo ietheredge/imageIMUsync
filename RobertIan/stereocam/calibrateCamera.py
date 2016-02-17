@@ -18,14 +18,14 @@ objp[:,:2] = np.mgrid[0:7,0:7].T.reshape(-1,2)
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
-images = glob.glob('calibrationImages/*.jpg')
+images = glob.glob('cam2calib/*.jpg')
 
 for fname in images:
     img = cv2.imread(fname)
     gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
     # Find the chess board corners
-    ret, corners = cv2.findChessboardCorners(gray, (7,7),None) #for a 7x6 chessboard pattern
+    ret, corners = cv2.findChessboardCorners(gray, (4,4),None) #for a 7x6 chessboard pattern
 
     # If found, add object points, image points (after refining them)
     if ret == True:
@@ -36,14 +36,14 @@ for fname in images:
         # Draw and display the corners
         cv2.drawChessboardCorners(img, (7,7), corners, ret)
         cv2.imshow('img',img)
-        cv2.waitKey(500)
+        cv2.waitKey(1)
 
 cv2.destroyAllWindows()
 
 #using 3D objpoints and 2D imgpoints, create the calibration variables
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1],None,None)
 
-images_again = glob.glob('calibrationImages/*.jpg')
+images_again = glob.glob('cam2calib/*.jpg')
 #undistort images
 for fname in images_again:
     img = cv2.imread(fname)
