@@ -27,12 +27,14 @@ class App:
         self.out = ('home/pi/imageIMUsync/data/'+outputfile)
 
         # setup camera
+
         self.camera.resolution = tuple(int(item) for item in res.split('x') if item.strip())
         self.imformat = imformat
         self.vcodec = vcodec
         self.camera.exposure_mode = exposure
-        self.camera.awb_mode = 'shade'
+        self.camera.awb_mode = 'off'
         self.camera.framerate = int(rate)
+
         logging.info('camera exposure setting:'+str(self.camera.exposure_mode))
         logging.info('camera shutter speed:'+str(self.camera.shutter_speed))
         time.sleep(1)
@@ -43,29 +45,34 @@ class App:
             time.sleep(length)
             GPIO.output(self.CAMLED,True) # Off
             time.sleep(length)
+
     def capimage(self):
         #print 'captured image'
         GPIO.output(self.CAMLED,False)
         self.camera.capture('%s.%s' % (self.out, self.imformat))
         GPIO.output(self.CAMLED,True)
+
     def capimagestack(self):
         #print 'captured stack'
         GPIO.output(CAMLED,False)
         self.camera.capture_sequence([str(self.out)+'_%04d.jpg' % i for i in range(self.n)], use_video_port=False)
         GPIO.output(CAMLED,True)
+
     def capvideo(self):
         #print 'captured video'
-        GPIO.output(self.CAMLED,False)
-        self.camera.start_recording('%s.%s' % (str(self.out), 'mkv'))
+        GPIO.output(CAMLED,False)
+        self.camera.start_recording('%s.%s' % (str(self.out), 'mkv'), format=self.vcodec)
         time.sleep(self.n)
         self.camera.stop_recording()
-        GPIO.output(self.CAMLED,True)
+        GPIO.output(CAMLED,True)
+
     def capraw(self):
         #stream = io.BytesIO()
         #print 'captured raw'
-        GPIO.output(self.CAMLED,False)
-        self.camera.capture('home/pi/imageIMUsync/data/'+str(datetime.datetime.now().strftime('%H-%M-%S-%f'))+'.jpg' , format='jpeg', bayer=True)
-        GPIO.output(self.CAMLED,True)
+        GPIO.output(CAMLED,False)
+        self.camera.capture('home/pi/imageIMUSync/data/'+str(datetime.datetime.now().strftime('%H-%M-%S-%f'))+'.jpg' , format='jpeg', bayer=True)
+        GPIO.output(CAMLED,True)
+
 if __name__=='__main__':
 
     #command line arguments
